@@ -16,9 +16,13 @@
 const Route = use('Route')
 const axios = require('axios')
 const Eureka = use('MigFrankfurt/Adonis/Eureka')
-const app1 = Eureka.getInstances('APP1') 
-console.log('-->' + app1.hostName )
-Route.get('/news/:text', async ({ params }) => {
-  const result = await axios.get(`http://${app1}/get_text/${params.text}`)
+
+Route.get('/news/:text', async ({params}) => {
+
+  const app1 = Eureka.getInstances('APP1')
+
+  var app1Path = app1[0].hostName+":"+app1[0].port.$;
+
+  const result = await axios.get(`http://${app1Path}/get_text/${params.text}`)
   return { response: result.data.message }
 })
